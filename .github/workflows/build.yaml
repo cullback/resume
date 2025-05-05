@@ -1,13 +1,30 @@
-name: Build Typst document
-on: push
+name: Typst Compile and Release PDF
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger workflow on tag pushes like v1.0, v2.3.4, etc.
+
+permissions:
+  contents: write
 
 jobs:
-  build_typst_documents:
-    runs-on: ubuntu-latest
+  build-and-release:
+    name: Build PDF and Create Release
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Typst
         uses: lvignoli/typst-action@main
+
+      - name: Compile Typst document
+        run: typst compile main.typ
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          source_file: resume.typ
+          files: main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
