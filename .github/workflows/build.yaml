@@ -13,17 +13,10 @@ jobs:
     name: Build PDF and Create Release
     runs-on: ubuntu-latest # Use the latest Ubuntu runner
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Typst
-        uses: lvignoli/typst-action@main
-
-      - name: Compile Typst document
-        run: typst compile main.typ
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
+      - run: typst compile main.typ
+      - uses: softprops/action-gh-release@v2
         with:
           files: main.pdf
         env:
