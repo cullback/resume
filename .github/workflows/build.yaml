@@ -3,7 +3,7 @@ name: Typst Compile and Release PDF
 on:
   push:
     tags:
-      - 'v*' # Trigger workflow on tag pushes like v1.0, v2.3.4, etc.
+      - '*' # Trigger workflow on tag pushes
 
 permissions:
   contents: write
